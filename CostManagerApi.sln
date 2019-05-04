@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostManagerApi", "CostManagerApi\CostManagerApi.csproj", "{56F541EE-AC0D-4C8B-A66C-A9F2A9BC4D8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56F541EE-AC0D-4C8B-A66C-A9F2A9BC4D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F541EE-AC0D-4C8B-A66C-A9F2A9BC4D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F541EE-AC0D-4C8B-A66C-A9F2A9BC4D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F541EE-AC0D-4C8B-A66C-A9F2A9BC4D8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3418140D-4CD9-40B9-AFB4-BC3E27C7712B}
+	EndGlobalSection
+EndGlobal
