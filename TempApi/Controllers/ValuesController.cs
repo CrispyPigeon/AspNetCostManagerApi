@@ -26,9 +26,7 @@ namespace TempApi.Controllers
             {
                 var users = db.Users.ToList();
                 return users;
-            }
-            
-            
+            }  
         }
 
         // POST api/values

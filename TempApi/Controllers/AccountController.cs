@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using TempApi.Models;
 using TempApi.Models.Db;
+using TempApi.Models.Requests.Base;
 using TempApi.Providers;
 using TempApi.Results;
 
@@ -127,7 +128,7 @@ namespace TempApi.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -260,9 +261,9 @@ namespace TempApi.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -323,29 +324,20 @@ namespace TempApi.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<Message<string>> Register(RegisterBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new ApplicationUser() { UserName = model.Login, Email = model.Login };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
             using (costmanagerdbEntities db = new costmanagerdbEntities())
             {
                 var userExists = db.Users.Any(x => x.Login == model.Login);
-                
+                if (userExists)
+                    return new Message<string> { StatusCode = 401, ReturnMessage = "Unauthorized", IsSuccess = false };
+                else
+                {
+                    var user = new ApplicationUser() { UserName = model.Login, Email = model.Login };
+                    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                    return new Message<string> { StatusCode = 200, ReturnMessage = "Registered", IsSuccess = true };
+                }
             }
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
         }
 
         // POST api/Account/RegisterExternal
@@ -376,7 +368,7 @@ namespace TempApi.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }
