@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using TempApi.Models;
+using TempApi.Models.Db;
 
 namespace TempApi.Controllers
 {
@@ -17,9 +20,15 @@ namespace TempApi.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public List<User> Get(int id)
         {
-            return "value";
+            using (costmanagerdbEntities db = new costmanagerdbEntities())
+            {
+                var users = db.Users.ToList();
+                return users;
+            }
+            
+            
         }
 
         // POST api/values

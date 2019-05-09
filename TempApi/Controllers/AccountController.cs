@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -14,6 +15,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using TempApi.Models;
+using TempApi.Models.Db;
 using TempApi.Providers;
 using TempApi.Results;
 
@@ -331,6 +333,12 @@ namespace TempApi.Controllers
             var user = new ApplicationUser() { UserName = model.Login, Email = model.Login };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            using (costmanagerdbEntities db = new costmanagerdbEntities())
+            {
+                var userExists = db.Users.Any(x => x.Login == model.Login);
+                
+            }
 
             if (!result.Succeeded)
             {
