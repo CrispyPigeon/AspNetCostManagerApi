@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using TempApi.Models;
 using TempApi.Models.Db;
+using TempApi.Models.Requests;
 using TempApi.Models.Requests.Base;
 using TempApi.Providers;
 using TempApi.Results;
@@ -333,9 +334,28 @@ namespace TempApi.Controllers
                     return new Message<string> { StatusCode = 401, ReturnMessage = "Unauthorized", IsSuccess = false };
                 else
                 {
+                    db.Users.Add(new Models.Db.User { Login = model.Login, Password = model.Password });
+                    await db.SaveChangesAsync();
                     var user = new ApplicationUser() { UserName = model.Login, Email = model.Login };
                     IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                     return new Message<string> { StatusCode = 200, ReturnMessage = "Registered", IsSuccess = true };
+                }
+            }
+        }
+
+        // POST api/Account/Login
+        [AllowAnonymous]
+        [Route("Login")]
+        public async Task<Message> Login(UserRequestData model)
+        {
+            using (costmanagerdbEntities db = new costmanagerdbEntities())
+            {
+                var user = db.Users.Where(x => x.Login == model.Username && x.Password == model.Password).FirstOrDefault();
+                if (user == null)
+                    return new Message { StatusCode = 404, ReturnMessage = "User not found or pass was incorrect", IsSuccess = false };
+                else
+                {                    
+                    return new Message { StatusCode = 200, ReturnMessage = "OK", IsSuccess = true }; //TOKEN
                 }
             }
         }
@@ -360,6 +380,7 @@ namespace TempApi.Controllers
             var user = new ApplicationUser() { UserName = model.Login, Email = model.Login };
 
             IdentityResult result = await UserManager.CreateAsync(user);
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);

@@ -16,6 +16,7 @@ namespace TempApi.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
+            var d = User.Identity;
             return new string[] { "value1", "value2" };
         }
 
@@ -26,7 +27,7 @@ namespace TempApi.Controllers
             {
                 var users = db.Users.ToList();
                 return users;
-            }  
+            }
         }
 
         // POST api/values

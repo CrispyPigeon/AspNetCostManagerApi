@@ -9,6 +9,7 @@
 
 namespace TempApi.Models.Db
 {
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
@@ -25,7 +26,7 @@ namespace TempApi.Models.Db
         {
             modelBuilder.HasDefaultSchema(Consts.DbSchema);
         }
-    
+
         public virtual DbSet<CostCategory> CostCategories { get; set; }
         public virtual DbSet<Cost> Costs { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
