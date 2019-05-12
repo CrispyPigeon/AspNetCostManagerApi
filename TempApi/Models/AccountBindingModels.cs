@@ -38,6 +38,8 @@ namespace TempApi.Models
         [Display(Name = "Login")]
         public string Login { get; set; }
 
+        public string UserDb { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

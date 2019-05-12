@@ -10,14 +10,14 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Name" Type="bpchar" MaxLength="25" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Costs">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Name" Type="bpchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="8000" Nullable="false" />
           <Property Name="IncomeID" Type="int4" Nullable="false" />
           <Property Name="UserID" Type="int4" Nullable="false" />
           <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
@@ -29,18 +29,30 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Name" Type="bpchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="Income">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Name" Type="bpchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="8000" Nullable="false" />
           <Property Name="StorageTypeID" Type="int4" Nullable="false" />
           <Property Name="CurrencyID" Type="int4" Nullable="false" />
           <Property Name="UserID" Type="int4" Nullable="false" />
           <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="LastSum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IncomeNotes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int4" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="IncomeID" Type="int4" Nullable="false" />
+          <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="UserID" Type="int4" Nullable="false" />
         </EntityType>
         <EntityType Name="MonthPlans">
           <Key>
@@ -56,15 +68,15 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Name" Type="bpchar" MaxLength="25" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Login" Type="bpchar" MaxLength="25" Nullable="false" />
-          <Property Name="Password" Type="bpchar" MaxLength="25" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <Association Name="CostCategoryF1">
           <End Role="CostCategory" Type="Self.CostCategory" Multiplicity="1" />
@@ -98,6 +110,18 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Costs">
+              <PropertyRef Name="IncomeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IncomeF3">
+          <End Role="Income" Type="Self.Income" Multiplicity="1" />
+          <End Role="IncomeNotes" Type="Self.IncomeNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Income">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IncomeNotes">
               <PropertyRef Name="IncomeID" />
             </Dependent>
           </ReferentialConstraint>
@@ -150,11 +174,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="UserIDF4">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="IncomeNotes" Type="Self.IncomeNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IncomeNotes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CostManagerDbModelStoreContainer">
           <EntitySet Name="CostCategory" EntityType="Self.CostCategory" Schema="public" store:Type="Tables" />
           <EntitySet Name="Costs" EntityType="Self.Costs" Schema="public" store:Type="Tables" />
           <EntitySet Name="Currencies" EntityType="Self.Currencies" Schema="public" store:Type="Tables" />
           <EntitySet Name="Income" EntityType="Self.Income" Schema="public" store:Type="Tables" />
+          <EntitySet Name="IncomeNotes" EntityType="Self.IncomeNotes" Schema="public" store:Type="Tables" />
           <EntitySet Name="MonthPlans" EntityType="Self.MonthPlans" Schema="public" store:Type="Tables" />
           <EntitySet Name="StorageTypes" EntityType="Self.StorageTypes" Schema="public" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="public" store:Type="Tables" />
@@ -169,6 +206,10 @@
           <AssociationSet Name="IncomeF1" Association="Self.IncomeF1">
             <End Role="Income" EntitySet="Income" />
             <End Role="Costs" EntitySet="Costs" />
+          </AssociationSet>
+          <AssociationSet Name="IncomeF3" Association="Self.IncomeF3">
+            <End Role="Income" EntitySet="Income" />
+            <End Role="IncomeNotes" EntitySet="IncomeNotes" />
           </AssociationSet>
           <AssociationSet Name="StorageTypeF1" Association="Self.StorageTypeF1">
             <End Role="StorageTypes" EntitySet="StorageTypes" />
@@ -185,6 +226,10 @@
           <AssociationSet Name="UserF3" Association="Self.UserF3">
             <End Role="Users" EntitySet="Users" />
             <End Role="MonthPlans" EntitySet="MonthPlans" />
+          </AssociationSet>
+          <AssociationSet Name="UserIDF4" Association="Self.UserIDF4">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="IncomeNotes" EntitySet="IncomeNotes" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -236,6 +281,8 @@
           <NavigationProperty Name="Currency" Relationship="Self.CurrencyF1" FromRole="Income" ToRole="Currencies" />
           <NavigationProperty Name="StorageType" Relationship="Self.StorageTypeF1" FromRole="Income" ToRole="StorageTypes" />
           <NavigationProperty Name="User" Relationship="Self.UserF1" FromRole="Income" ToRole="Users" />
+          <Property Name="LastSum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <NavigationProperty Name="IncomeNotes" Relationship="CostManagerDbModel.IncomeF3" FromRole="Income" ToRole="IncomeNote" />
         </EntityType>
         <EntityType Name="MonthPlan">
           <Key>
@@ -265,6 +312,7 @@
           <NavigationProperty Name="Costs" Relationship="Self.UserF2" FromRole="Users" ToRole="Costs" />
           <NavigationProperty Name="Incomes" Relationship="Self.UserF1" FromRole="Users" ToRole="Income" />
           <NavigationProperty Name="MonthPlans" Relationship="Self.UserF3" FromRole="Users" ToRole="MonthPlans" />
+          <NavigationProperty Name="IncomeNotes" Relationship="CostManagerDbModel.UserIDF4" FromRole="User" ToRole="IncomeNote" />
         </EntityType>
         <Association Name="IncomeF1">
           <End Role="Income" Type="Self.Income" Multiplicity="1" />
@@ -374,6 +422,15 @@
             <End Role="CostCategory" EntitySet="CostCategories" />
             <End Role="Cost" EntitySet="Costs" />
           </AssociationSet>
+          <EntitySet Name="IncomeNotes" EntityType="CostManagerDbModel.IncomeNote" />
+          <AssociationSet Name="IncomeF3" Association="CostManagerDbModel.IncomeF3">
+            <End Role="Income" EntitySet="Income" />
+            <End Role="IncomeNote" EntitySet="IncomeNotes" />
+          </AssociationSet>
+          <AssociationSet Name="UserIDF4" Association="CostManagerDbModel.UserIDF4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="IncomeNote" EntitySet="IncomeNotes" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="CostCategoryF1">
           <End Type="CostManagerDbModel.CostCategory" Role="CostCategory" Multiplicity="1" />
@@ -384,6 +441,43 @@
             </Principal>
             <Dependent Role="Cost">
               <PropertyRef Name="CostCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IncomeNote">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="IncomeID" Type="Int32" Nullable="false" />
+          <Property Name="Sum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Income" Relationship="CostManagerDbModel.IncomeF3" FromRole="IncomeNote" ToRole="Income" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="CostManagerDbModel.UserIDF4" FromRole="IncomeNote" ToRole="User" />
+        </EntityType>
+        <Association Name="IncomeF3">
+          <End Type="CostManagerDbModel.Income" Role="Income" Multiplicity="1" />
+          <End Type="CostManagerDbModel.IncomeNote" Role="IncomeNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Income">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IncomeNote">
+              <PropertyRef Name="IncomeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserIDF4">
+          <End Type="CostManagerDbModel.User" Role="User" Multiplicity="1" />
+          <End Type="CostManagerDbModel.IncomeNote" Role="IncomeNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="IncomeNote">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -425,6 +519,7 @@
           <EntitySetMapping Name="Income">
             <EntityTypeMapping TypeName="CostManagerDbModel.Income">
               <MappingFragment StoreEntitySet="Income">
+                <ScalarProperty Name="LastSum" ColumnName="LastSum" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StorageTypeID" ColumnName="StorageTypeID" />
@@ -458,6 +553,18 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncomeNotes">
+            <EntityTypeMapping TypeName="CostManagerDbModel.IncomeNote">
+              <MappingFragment StoreEntitySet="IncomeNotes">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+                <ScalarProperty Name="IncomeID" ColumnName="IncomeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

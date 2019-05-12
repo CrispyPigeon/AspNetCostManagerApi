@@ -11,14 +11,14 @@ namespace TempApi.Models.Db
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    [Table("Income")]
+    
     public partial class Income
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Income()
         {
             this.Costs = new HashSet<Cost>();
+            this.IncomeNotes = new HashSet<IncomeNote>();
         }
     
         public int ID { get; set; }
@@ -27,10 +27,14 @@ namespace TempApi.Models.Db
         public int CurrencyID { get; set; }
         public int UserID { get; set; }
         public decimal Sum { get; set; }
+        public decimal LastSum { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cost> Costs { get; set; }
         public virtual Currency Currency { get; set; }
         public virtual StorageType StorageType { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IncomeNote> IncomeNotes { get; set; }
     }
 }

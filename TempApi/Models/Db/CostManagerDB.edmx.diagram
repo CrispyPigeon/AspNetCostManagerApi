@@ -20,6 +20,9 @@
         <AssociationConnector Association="CostManagerDbModel.UserF1" ManuallyRouted="false" />
         <AssociationConnector Association="CostManagerDbModel.UserF3" ManuallyRouted="false" />
         <AssociationConnector Association="CostManagerDbModel.CostCategoryF1" />
+        <EntityTypeShape EntityType="CostManagerDbModel.IncomeNote" Width="1.5" PointX="6" PointY="0.625" />
+        <AssociationConnector Association="CostManagerDbModel.IncomeF3" />
+        <AssociationConnector Association="CostManagerDbModel.UserIDF4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

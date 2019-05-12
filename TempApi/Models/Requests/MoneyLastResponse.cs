@@ -5,9 +5,10 @@ using System.Web;
 
 namespace TempApi.Models.Requests
 {
-    public class UserRequestData
+    public class MoneyLastResponse
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public int IncomeId { get; set; }
+
+        public decimal Sum { get; set; }
     }
 }

@@ -12,18 +12,16 @@ namespace TempApi.Models.Db
     using System;
     using System.Collections.Generic;
     
-    public partial class StorageType
+    public partial class IncomeNote
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public StorageType()
-        {
-            this.Incomes = new HashSet<Income>();
-        }
-    
         public int ID { get; set; }
         public string Name { get; set; }
+        public int IncomeID { get; set; }
+        public decimal Sum { get; set; }
+        public System.DateTime Date { get; set; }
+        public int UserID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Income> Incomes { get; set; }
+        public virtual Income Income { get; set; }
+        public virtual User User { get; set; }
     }
 }

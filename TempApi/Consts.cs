@@ -9,5 +9,6 @@ namespace TempApi
     {
         public const string DbConnectionString = "CostManagerDbConnection";
         public const string DbSchema = "public";
+        public const string useDbId = "userDbId";
     }
 }

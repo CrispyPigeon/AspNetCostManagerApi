@@ -9,7 +9,6 @@
 
 namespace TempApi.Models.Db
 {
-    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
@@ -21,7 +20,7 @@ namespace TempApi.Models.Db
         {
             this.Configuration.LazyLoadingEnabled = false;
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(Consts.DbSchema);
@@ -34,5 +33,6 @@ namespace TempApi.Models.Db
         public virtual DbSet<MonthPlan> MonthPlans { get; set; }
         public virtual DbSet<StorageType> StorageTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<IncomeNote> IncomeNotes { get; set; }
     }
 }
