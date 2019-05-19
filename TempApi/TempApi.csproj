@@ -228,6 +228,7 @@
     <Compile Include="Consts.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Calculations\CommonStatisticController.cs" />
     <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -235,7 +236,6 @@
     <Compile Include="Controllers\CostCategoryController.cs" />
     <Compile Include="Controllers\IncomeNoteController.cs" />
     <Compile Include="Controllers\StorageTypeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -290,6 +290,9 @@
       <DependentUpon>CostManagerDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Requests\CostsByIncome\CostByCategory.cs" />
+    <Compile Include="Models\Requests\CostsByIncome\CostByIncome.cs" />
+    <Compile Include="Models\Requests\CostsByIncome\IncomeForCosts.cs" />
     <Compile Include="Models\Requests\Messages\BadMessage.cs" />
     <Compile Include="Models\Requests\Messages\Base\Message.cs" />
     <Compile Include="Models\Requests\Messages\OkMessage.cs" />
@@ -420,7 +423,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\Calculations\" />
     <Folder Include="Views\Data\" />
   </ItemGroup>
   <ItemGroup>
