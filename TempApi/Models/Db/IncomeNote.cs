@@ -16,12 +16,12 @@ namespace TempApi.Models.Db
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int IncomeID { get; set; }
+        public int WalletID { get; set; }
         public decimal Sum { get; set; }
         public System.DateTime Date { get; set; }
         public int UserID { get; set; }
     
-        public virtual Income Income { get; set; }
+        public virtual Wallet Wallet { get; set; }
         public virtual User User { get; set; }
     }
 }

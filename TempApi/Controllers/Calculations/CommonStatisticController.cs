@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,31 +16,38 @@ namespace TempApi.Controllers.Calculations
     [RoutePrefix("api/commonstatistic")]
     public class CommonStatisticController : BaseController
     {
-        public Message<List<CostByIncome>> Get()
+        public Message<List<CostByWallet>> Get()
         {
             using (var dbContext = InitializeDbContext())
             {
-                var incomes = dbContext.Income.Select(x => new Income
-                {
-                    Name = x.Name,
-                    Sum = x.Sum,
-                    LastSum = x.LastSum,
-                    Costs = x.Costs.AsQueryable().Select(y => new Cost
-                    {
-                        Sum = y.Sum,
-                        CostCategory = y.CostCategory
+                var userId = GetUserDbId();
+                //var incomes = dbContext.Wallets.Where(x => x.UserID == userId)
+                //    .Select(x => new Wallet
+                //{
+                //    Name = x.Name,
+                //    Sum = x.Sum,
+                //    LastSum = x.LastSum,
+                //    Costs = x.Costs.AsQueryable().Select(y => new Cost
+                //    {
+                //        Sum = y.Sum,
+                //        CostCategory = y.CostCategory
 
-                    }).ToList(),
-                    Currency = x.Currency
-                }).ToList();
+                //    }).ToList(),
+                //    Currency = x.Currency
+                //}).ToList();
 
-                List<CostByIncome> result = new List<CostByIncome>();
+                var incomes = dbContext.Wallets.Where(x => x.UserID == userId)
+                    .Include(y => y.Costs.Select(z => z.CostCategory))
+                    .Include("Currency")
+                    .ToList();
+
+                List<CostByWallet> result = new List<CostByWallet>();
 
                 foreach (var income in incomes)
                 {
-                    result.Add(new CostByIncome
+                    result.Add(new CostByWallet
                     {
-                        Income = new IncomeForCosts
+                        Wallet = new IncomeForCosts
                         {
                             Name = income.Name,
                             Sum = income.Sum,
@@ -54,7 +62,7 @@ namespace TempApi.Controllers.Calculations
                     });
                 }
 
-                var resultMessage = new OkMessage<List<CostByIncome>>();
+                var resultMessage = new OkMessage<List<CostByWallet>>();
                 resultMessage.ReturnMessage = "Common Statistic!";
                 resultMessage.Data = result;
                 return resultMessage;

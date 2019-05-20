@@ -5,9 +5,9 @@ using System.Web;
 
 namespace TempApi.Models.Requests.CostsByIncome
 {
-    public class CostByIncome
+    public class CostByWallet
     {
-        public IncomeForCosts Income { get; set; }
+        public IncomeForCosts Wallet { get; set; }
 
         public List<CostByCategory> Costs { get; set; }
     }

@@ -34,7 +34,7 @@ namespace TempApi.Controllers
             {
                 var id = GetUserDbId();
                 dbContext.Costs.Add(item);
-                var income = dbContext.Income.FirstOrDefault(x => x.ID == item.ID);
+                var income = dbContext.Wallets.FirstOrDefault(x => x.ID == item.ID);
                 income.LastSum -= item.Sum; //Updating INCOME
                 dbContext.SaveChanges();
                 var result = new OkMessage();

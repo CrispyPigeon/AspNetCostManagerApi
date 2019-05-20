@@ -24,12 +24,13 @@ namespace TempApi.Controllers
             }
         }
 
-        public Message Post([FromBody]Cost item)
+        public Message Post([FromBody]IncomeNote item)
         {
             using (var dbContext = InitializeDbContext())
             {
                 var id = GetUserDbId();
-                dbContext.Costs.Add(item);
+                item.UserID = id;
+                dbContext.IncomeNotes.Add(item);
                 dbContext.SaveChanges();
                 var result = new OkMessage();
                 result.ReturnMessage = "Item successfully added!";

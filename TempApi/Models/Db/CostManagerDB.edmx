@@ -18,7 +18,7 @@
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="8000" Nullable="false" />
-          <Property Name="IncomeID" Type="int4" Nullable="false" />
+          <Property Name="WalletID" Type="int4" Nullable="false" />
           <Property Name="UserID" Type="int4" Nullable="false" />
           <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
@@ -31,25 +31,13 @@
           <Property Name="ID" Type="int4" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
-        <EntityType Name="Income">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int4" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="8000" Nullable="false" />
-          <Property Name="StorageTypeID" Type="int4" Nullable="false" />
-          <Property Name="CurrencyID" Type="int4" Nullable="false" />
-          <Property Name="UserID" Type="int4" Nullable="false" />
-          <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
-          <Property Name="LastSum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
-        </EntityType>
         <EntityType Name="IncomeNotes">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int4" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="IncomeID" Type="int4" Nullable="false" />
+          <Property Name="WalletID" Type="int4" Nullable="false" />
           <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="UserID" Type="int4" Nullable="false" />
@@ -78,6 +66,18 @@
           <Property Name="Login" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
+        <EntityType Name="Wallets">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int4" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="8000" Nullable="false" />
+          <Property Name="StorageTypeID" Type="int4" Nullable="false" />
+          <Property Name="CurrencyID" Type="int4" Nullable="false" />
+          <Property Name="UserID" Type="int4" Nullable="false" />
+          <Property Name="Sum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="LastSum" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+        </EntityType>
         <Association Name="CostCategoryF1">
           <End Role="CostCategory" Type="Self.CostCategory" Multiplicity="1" />
           <End Role="Costs" Type="Self.Costs" Multiplicity="*" />
@@ -92,60 +92,60 @@
         </Association>
         <Association Name="CurrencyF1">
           <End Role="Currencies" Type="Self.Currencies" Multiplicity="1" />
-          <End Role="Income" Type="Self.Income" Multiplicity="*" />
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Currencies">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Income">
+            <Dependent Role="Wallets">
               <PropertyRef Name="CurrencyID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="IncomeF1">
-          <End Role="Income" Type="Self.Income" Multiplicity="1" />
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="1" />
           <End Role="Costs" Type="Self.Costs" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Income">
+            <Principal Role="Wallets">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Costs">
-              <PropertyRef Name="IncomeID" />
+              <PropertyRef Name="WalletID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="IncomeF3">
-          <End Role="Income" Type="Self.Income" Multiplicity="1" />
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="1" />
           <End Role="IncomeNotes" Type="Self.IncomeNotes" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Income">
+            <Principal Role="Wallets">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="IncomeNotes">
-              <PropertyRef Name="IncomeID" />
+              <PropertyRef Name="WalletID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="StorageTypeF1">
           <End Role="StorageTypes" Type="Self.StorageTypes" Multiplicity="1" />
-          <End Role="Income" Type="Self.Income" Multiplicity="*" />
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StorageTypes">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Income">
+            <Dependent Role="Wallets">
               <PropertyRef Name="StorageTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="UserF1">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Income" Type="Self.Income" Multiplicity="*" />
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Income">
+            <Dependent Role="Wallets">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -190,34 +190,34 @@
           <EntitySet Name="CostCategory" EntityType="Self.CostCategory" Schema="public" store:Type="Tables" />
           <EntitySet Name="Costs" EntityType="Self.Costs" Schema="public" store:Type="Tables" />
           <EntitySet Name="Currencies" EntityType="Self.Currencies" Schema="public" store:Type="Tables" />
-          <EntitySet Name="Income" EntityType="Self.Income" Schema="public" store:Type="Tables" />
           <EntitySet Name="IncomeNotes" EntityType="Self.IncomeNotes" Schema="public" store:Type="Tables" />
           <EntitySet Name="MonthPlans" EntityType="Self.MonthPlans" Schema="public" store:Type="Tables" />
           <EntitySet Name="StorageTypes" EntityType="Self.StorageTypes" Schema="public" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Wallets" EntityType="Self.Wallets" Schema="public" store:Type="Tables" />
           <AssociationSet Name="CostCategoryF1" Association="Self.CostCategoryF1">
             <End Role="CostCategory" EntitySet="CostCategory" />
             <End Role="Costs" EntitySet="Costs" />
           </AssociationSet>
           <AssociationSet Name="CurrencyF1" Association="Self.CurrencyF1">
             <End Role="Currencies" EntitySet="Currencies" />
-            <End Role="Income" EntitySet="Income" />
+            <End Role="Wallets" EntitySet="Wallets" />
           </AssociationSet>
           <AssociationSet Name="IncomeF1" Association="Self.IncomeF1">
-            <End Role="Income" EntitySet="Income" />
+            <End Role="Wallets" EntitySet="Wallets" />
             <End Role="Costs" EntitySet="Costs" />
           </AssociationSet>
           <AssociationSet Name="IncomeF3" Association="Self.IncomeF3">
-            <End Role="Income" EntitySet="Income" />
+            <End Role="Wallets" EntitySet="Wallets" />
             <End Role="IncomeNotes" EntitySet="IncomeNotes" />
           </AssociationSet>
           <AssociationSet Name="StorageTypeF1" Association="Self.StorageTypeF1">
             <End Role="StorageTypes" EntitySet="StorageTypes" />
-            <End Role="Income" EntitySet="Income" />
+            <End Role="Wallets" EntitySet="Wallets" />
           </AssociationSet>
           <AssociationSet Name="UserF1" Association="Self.UserF1">
             <End Role="Users" EntitySet="Users" />
-            <End Role="Income" EntitySet="Income" />
+            <End Role="Wallets" EntitySet="Wallets" />
           </AssociationSet>
           <AssociationSet Name="UserF2" Association="Self.UserF2">
             <End Role="Users" EntitySet="Users" />
@@ -236,12 +236,58 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CostManagerDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="costmanagerdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CostCategories" EntityType="CostManagerDbModel.CostCategory" />
+          <EntitySet Name="Costs" EntityType="CostManagerDbModel.Cost" />
+          <EntitySet Name="Currencies" EntityType="CostManagerDbModel.Currency" />
+          <EntitySet Name="IncomeNotes" EntityType="CostManagerDbModel.IncomeNote" />
+          <EntitySet Name="MonthPlans" EntityType="CostManagerDbModel.MonthPlan" />
+          <EntitySet Name="StorageTypes" EntityType="CostManagerDbModel.StorageType" />
+          <EntitySet Name="Users" EntityType="CostManagerDbModel.User" />
+          <EntitySet Name="Wallets" EntityType="CostManagerDbModel.Wallet" />
+          <AssociationSet Name="CostCategoryF1" Association="CostManagerDbModel.CostCategoryF1">
+            <End Role="CostCategory" EntitySet="CostCategories" />
+            <End Role="Cost" EntitySet="Costs" />
+          </AssociationSet>
+          <AssociationSet Name="IncomeF1" Association="CostManagerDbModel.IncomeF1">
+            <End Role="Wallet" EntitySet="Wallets" />
+            <End Role="Cost" EntitySet="Costs" />
+          </AssociationSet>
+          <AssociationSet Name="UserF2" Association="CostManagerDbModel.UserF2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Cost" EntitySet="Costs" />
+          </AssociationSet>
+          <AssociationSet Name="CurrencyF1" Association="CostManagerDbModel.CurrencyF1">
+            <End Role="Currency" EntitySet="Currencies" />
+            <End Role="Wallet" EntitySet="Wallets" />
+          </AssociationSet>
+          <AssociationSet Name="IncomeF3" Association="CostManagerDbModel.IncomeF3">
+            <End Role="Wallet" EntitySet="Wallets" />
+            <End Role="IncomeNote" EntitySet="IncomeNotes" />
+          </AssociationSet>
+          <AssociationSet Name="UserIDF4" Association="CostManagerDbModel.UserIDF4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="IncomeNote" EntitySet="IncomeNotes" />
+          </AssociationSet>
+          <AssociationSet Name="UserF3" Association="CostManagerDbModel.UserF3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MonthPlan" EntitySet="MonthPlans" />
+          </AssociationSet>
+          <AssociationSet Name="StorageTypeF1" Association="CostManagerDbModel.StorageTypeF1">
+            <End Role="StorageType" EntitySet="StorageTypes" />
+            <End Role="Wallet" EntitySet="Wallets" />
+          </AssociationSet>
+          <AssociationSet Name="UserF1" Association="CostManagerDbModel.UserF1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Wallet" EntitySet="Wallets" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="CostCategory">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Costs" Relationship="CostManagerDbModel.CostCategoryF1" FromRole="CostCategory" ToRole="Cost" />
         </EntityType>
         <EntityType Name="Cost">
@@ -249,40 +295,36 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="IncomeID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="8000" FixedLength="false" Unicode="true" />
+          <Property Name="WalletID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Sum" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
-          <NavigationProperty Name="Income" Relationship="Self.IncomeF1" FromRole="Costs" ToRole="Income" />
-          <NavigationProperty Name="User" Relationship="Self.UserF2" FromRole="Costs" ToRole="Users" />
+          <Property Name="Sum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CostCategoryID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CostCategory" Relationship="CostManagerDbModel.CostCategoryF1" FromRole="Cost" ToRole="CostCategory" />
+          <NavigationProperty Name="Wallet" Relationship="CostManagerDbModel.IncomeF1" FromRole="Cost" ToRole="Wallet" />
+          <NavigationProperty Name="User" Relationship="CostManagerDbModel.UserF2" FromRole="Cost" ToRole="User" />
         </EntityType>
         <EntityType Name="Currency">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Incomes" Relationship="Self.CurrencyF1" FromRole="Currencies" ToRole="Income" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Wallets" Relationship="CostManagerDbModel.CurrencyF1" FromRole="Currency" ToRole="Wallet" />
         </EntityType>
-        <EntityType Name="Income">
+        <EntityType Name="IncomeNote">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="StorageTypeID" Type="Int32" Nullable="false" />
-          <Property Name="CurrencyID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="WalletID" Type="Int32" Nullable="false" />
+          <Property Name="Sum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Sum" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Costs" Relationship="Self.IncomeF1" FromRole="Income" ToRole="Costs" />
-          <NavigationProperty Name="Currency" Relationship="Self.CurrencyF1" FromRole="Income" ToRole="Currencies" />
-          <NavigationProperty Name="StorageType" Relationship="Self.StorageTypeF1" FromRole="Income" ToRole="StorageTypes" />
-          <NavigationProperty Name="User" Relationship="Self.UserF1" FromRole="Income" ToRole="Users" />
-          <Property Name="LastSum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
-          <NavigationProperty Name="IncomeNotes" Relationship="CostManagerDbModel.IncomeF3" FromRole="Income" ToRole="IncomeNote" />
+          <NavigationProperty Name="Wallet" Relationship="CostManagerDbModel.IncomeF3" FromRole="IncomeNote" ToRole="Wallet" />
+          <NavigationProperty Name="User" Relationship="CostManagerDbModel.UserIDF4" FromRole="IncomeNote" ToRole="User" />
         </EntityType>
         <EntityType Name="MonthPlan">
           <Key>
@@ -291,147 +333,46 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="Sum" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.UserF3" FromRole="MonthPlans" ToRole="Users" />
+          <Property Name="Sum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <NavigationProperty Name="User" Relationship="CostManagerDbModel.UserF3" FromRole="MonthPlan" ToRole="User" />
         </EntityType>
         <EntityType Name="StorageType">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Incomes" Relationship="Self.StorageTypeF1" FromRole="StorageTypes" ToRole="Income" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Wallets" Relationship="CostManagerDbModel.StorageTypeF1" FromRole="StorageType" ToRole="Wallet" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Login" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Costs" Relationship="Self.UserF2" FromRole="Users" ToRole="Costs" />
-          <NavigationProperty Name="Incomes" Relationship="Self.UserF1" FromRole="Users" ToRole="Income" />
-          <NavigationProperty Name="MonthPlans" Relationship="Self.UserF3" FromRole="Users" ToRole="MonthPlans" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Costs" Relationship="CostManagerDbModel.UserF2" FromRole="User" ToRole="Cost" />
           <NavigationProperty Name="IncomeNotes" Relationship="CostManagerDbModel.UserIDF4" FromRole="User" ToRole="IncomeNote" />
+          <NavigationProperty Name="MonthPlans" Relationship="CostManagerDbModel.UserF3" FromRole="User" ToRole="MonthPlan" />
+          <NavigationProperty Name="Wallets" Relationship="CostManagerDbModel.UserF1" FromRole="User" ToRole="Wallet" />
         </EntityType>
-        <Association Name="IncomeF1">
-          <End Role="Income" Type="Self.Income" Multiplicity="1" />
-          <End Role="Costs" Type="Self.Cost" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Income">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Costs">
-              <PropertyRef Name="IncomeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserF2">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Costs" Type="Self.Cost" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Costs">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="CurrencyF1">
-          <End Role="Currencies" Type="Self.Currency" Multiplicity="1" />
-          <End Role="Income" Type="Self.Income" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Currencies">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Income">
-              <PropertyRef Name="CurrencyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="StorageTypeF1">
-          <End Role="StorageTypes" Type="Self.StorageType" Multiplicity="1" />
-          <End Role="Income" Type="Self.Income" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StorageTypes">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Income">
-              <PropertyRef Name="StorageTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserF1">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Income" Type="Self.Income" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Income">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserF3">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="MonthPlans" Type="Self.MonthPlan" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="MonthPlans">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="costmanagerdbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CostCategories" EntityType="Self.CostCategory" />
-          <EntitySet Name="Costs" EntityType="Self.Cost" />
-          <EntitySet Name="Currencies" EntityType="Self.Currency" />
-          <EntitySet Name="Income" EntityType="Self.Income" />
-          <EntitySet Name="MonthPlans" EntityType="Self.MonthPlan" />
-          <EntitySet Name="StorageTypes" EntityType="Self.StorageType" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="IncomeF1" Association="Self.IncomeF1">
-            <End Role="Income" EntitySet="Income" />
-            <End Role="Costs" EntitySet="Costs" />
-          </AssociationSet>
-          <AssociationSet Name="UserF2" Association="Self.UserF2">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Costs" EntitySet="Costs" />
-          </AssociationSet>
-          <AssociationSet Name="CurrencyF1" Association="Self.CurrencyF1">
-            <End Role="Currencies" EntitySet="Currencies" />
-            <End Role="Income" EntitySet="Income" />
-          </AssociationSet>
-          <AssociationSet Name="StorageTypeF1" Association="Self.StorageTypeF1">
-            <End Role="StorageTypes" EntitySet="StorageTypes" />
-            <End Role="Income" EntitySet="Income" />
-          </AssociationSet>
-          <AssociationSet Name="UserF1" Association="Self.UserF1">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Income" EntitySet="Income" />
-          </AssociationSet>
-          <AssociationSet Name="UserF3" Association="Self.UserF3">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="MonthPlans" EntitySet="MonthPlans" />
-          </AssociationSet>
-          <AssociationSet Name="CostCategoryF1" Association="CostManagerDbModel.CostCategoryF1">
-            <End Role="CostCategory" EntitySet="CostCategories" />
-            <End Role="Cost" EntitySet="Costs" />
-          </AssociationSet>
-          <EntitySet Name="IncomeNotes" EntityType="CostManagerDbModel.IncomeNote" />
-          <AssociationSet Name="IncomeF3" Association="CostManagerDbModel.IncomeF3">
-            <End Role="Income" EntitySet="Income" />
-            <End Role="IncomeNote" EntitySet="IncomeNotes" />
-          </AssociationSet>
-          <AssociationSet Name="UserIDF4" Association="CostManagerDbModel.UserIDF4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="IncomeNote" EntitySet="IncomeNotes" />
-          </AssociationSet>
-        </EntityContainer>
+        <EntityType Name="Wallet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="8000" FixedLength="false" Unicode="true" />
+          <Property Name="StorageTypeID" Type="Int32" Nullable="false" />
+          <Property Name="CurrencyID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Sum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <Property Name="LastSum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <NavigationProperty Name="Costs" Relationship="CostManagerDbModel.IncomeF1" FromRole="Wallet" ToRole="Cost" />
+          <NavigationProperty Name="Currency" Relationship="CostManagerDbModel.CurrencyF1" FromRole="Wallet" ToRole="Currency" />
+          <NavigationProperty Name="IncomeNotes" Relationship="CostManagerDbModel.IncomeF3" FromRole="Wallet" ToRole="IncomeNote" />
+          <NavigationProperty Name="StorageType" Relationship="CostManagerDbModel.StorageTypeF1" FromRole="Wallet" ToRole="StorageType" />
+          <NavigationProperty Name="User" Relationship="CostManagerDbModel.UserF1" FromRole="Wallet" ToRole="User" />
+        </EntityType>
         <Association Name="CostCategoryF1">
           <End Type="CostManagerDbModel.CostCategory" Role="CostCategory" Multiplicity="1" />
           <End Type="CostManagerDbModel.Cost" Role="Cost" Multiplicity="*" />
@@ -444,28 +385,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="IncomeNote">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="IncomeID" Type="Int32" Nullable="false" />
-          <Property Name="Sum" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Income" Relationship="CostManagerDbModel.IncomeF3" FromRole="IncomeNote" ToRole="Income" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="CostManagerDbModel.UserIDF4" FromRole="IncomeNote" ToRole="User" />
-        </EntityType>
+        <Association Name="IncomeF1">
+          <End Type="CostManagerDbModel.Wallet" Role="Wallet" Multiplicity="1" />
+          <End Type="CostManagerDbModel.Cost" Role="Cost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Wallet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Cost">
+              <PropertyRef Name="WalletID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserF2">
+          <End Type="CostManagerDbModel.User" Role="User" Multiplicity="1" />
+          <End Type="CostManagerDbModel.Cost" Role="Cost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Cost">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CurrencyF1">
+          <End Type="CostManagerDbModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="CostManagerDbModel.Wallet" Role="Wallet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Wallet">
+              <PropertyRef Name="CurrencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="IncomeF3">
-          <End Type="CostManagerDbModel.Income" Role="Income" Multiplicity="1" />
+          <End Type="CostManagerDbModel.Wallet" Role="Wallet" Multiplicity="1" />
           <End Type="CostManagerDbModel.IncomeNote" Role="IncomeNote" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Income">
+            <Principal Role="Wallet">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="IncomeNote">
-              <PropertyRef Name="IncomeID" />
+              <PropertyRef Name="WalletID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -481,7 +445,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="UserF3">
+          <End Type="CostManagerDbModel.User" Role="User" Multiplicity="1" />
+          <End Type="CostManagerDbModel.MonthPlan" Role="MonthPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MonthPlan">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StorageTypeF1">
+          <End Type="CostManagerDbModel.StorageType" Role="StorageType" Multiplicity="1" />
+          <End Type="CostManagerDbModel.Wallet" Role="Wallet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StorageType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Wallet">
+              <PropertyRef Name="StorageTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserF1">
+          <End Type="CostManagerDbModel.User" Role="User" Multiplicity="1" />
+          <End Type="CostManagerDbModel.Wallet" Role="Wallet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Wallet">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -490,8 +490,8 @@
           <EntitySetMapping Name="CostCategories">
             <EntityTypeMapping TypeName="CostManagerDbModel.CostCategory">
               <MappingFragment StoreEntitySet="CostCategory">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -499,60 +499,20 @@
             <EntityTypeMapping TypeName="CostManagerDbModel.Cost">
               <MappingFragment StoreEntitySet="Costs">
                 <ScalarProperty Name="CostCategoryID" ColumnName="CostCategoryID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IncomeID" ColumnName="IncomeID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Sum" ColumnName="Sum" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="WalletID" ColumnName="WalletID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Currencies">
             <EntityTypeMapping TypeName="CostManagerDbModel.Currency">
               <MappingFragment StoreEntitySet="Currencies">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Income">
-            <EntityTypeMapping TypeName="CostManagerDbModel.Income">
-              <MappingFragment StoreEntitySet="Income">
-                <ScalarProperty Name="LastSum" ColumnName="LastSum" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="StorageTypeID" ColumnName="StorageTypeID" />
-                <ScalarProperty Name="CurrencyID" ColumnName="CurrencyID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Sum" ColumnName="Sum" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MonthPlans">
-            <EntityTypeMapping TypeName="CostManagerDbModel.MonthPlan">
-              <MappingFragment StoreEntitySet="MonthPlans">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
-                <ScalarProperty Name="Sum" ColumnName="Sum" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StorageTypes">
-            <EntityTypeMapping TypeName="CostManagerDbModel.StorageType">
-              <MappingFragment StoreEntitySet="StorageTypes">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="CostManagerDbModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -562,7 +522,47 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Sum" ColumnName="Sum" />
-                <ScalarProperty Name="IncomeID" ColumnName="IncomeID" />
+                <ScalarProperty Name="WalletID" ColumnName="WalletID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthPlans">
+            <EntityTypeMapping TypeName="CostManagerDbModel.MonthPlan">
+              <MappingFragment StoreEntitySet="MonthPlans">
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StorageTypes">
+            <EntityTypeMapping TypeName="CostManagerDbModel.StorageType">
+              <MappingFragment StoreEntitySet="StorageTypes">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CostManagerDbModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Wallets">
+            <EntityTypeMapping TypeName="CostManagerDbModel.Wallet">
+              <MappingFragment StoreEntitySet="Wallets">
+                <ScalarProperty Name="LastSum" ColumnName="LastSum" />
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CurrencyID" ColumnName="CurrencyID" />
+                <ScalarProperty Name="StorageTypeID" ColumnName="StorageTypeID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

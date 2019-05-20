@@ -8,28 +8,28 @@ using TempApi.Models.Requests.Base;
 namespace TempApi.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/income")]
-    public class IncomeController : BaseController
+    [RoutePrefix("api/wallets")]
+    public class WalletsController : BaseController
     {
-        public Message<List<Income>> Get()
+        public Message<List<Wallet>> Get()
         {
             using (var dbContext = InitializeDbContext())
             {
                 var id = GetUserDbId();
-                var data = dbContext.Income.Where(x => x.UserID == id).ToList();
-                var result = new OkMessage<List<Income>> { Data = data };
+                var data = dbContext.Wallets.Where(x => x.UserID == id).ToList();
+                var result = new OkMessage<List<Wallet>> { Data = data };
 
                 return result;
             }
         }
 
-        public Message Post([FromBody]Income item)
+        public Message Post([FromBody]Wallet item)
         {
             using (var dbContext = InitializeDbContext())
             {
                 var id = GetUserDbId();
-                dbContext.Income.Add(item);
-                var income = dbContext.Income.FirstOrDefault(x => x.ID == item.ID);
+                dbContext.Wallets.Add(item);
+                var income = dbContext.Wallets.FirstOrDefault(x => x.ID == item.ID);
                 income.Sum += item.Sum; //Updating INCOME
                 income.LastSum += item.Sum;
                 dbContext.SaveChanges();

@@ -29,10 +29,10 @@ namespace TempApi.Models.Db
         public virtual DbSet<CostCategory> CostCategories { get; set; }
         public virtual DbSet<Cost> Costs { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
-        public virtual DbSet<Income> Income { get; set; }
+        public virtual DbSet<IncomeNote> IncomeNotes { get; set; }
         public virtual DbSet<MonthPlan> MonthPlans { get; set; }
         public virtual DbSet<StorageType> StorageTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<IncomeNote> IncomeNotes { get; set; }
+        public virtual DbSet<Wallet> Wallets { get; set; }
     }
 }

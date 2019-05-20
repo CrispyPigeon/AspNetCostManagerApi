@@ -12,10 +12,10 @@ namespace TempApi.Models.Db
     using System;
     using System.Collections.Generic;
     
-    public partial class Income
+    public partial class Wallet
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Income()
+        public Wallet()
         {
             this.Costs = new HashSet<Cost>();
             this.IncomeNotes = new HashSet<IncomeNote>();
@@ -32,9 +32,9 @@ namespace TempApi.Models.Db
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cost> Costs { get; set; }
         public virtual Currency Currency { get; set; }
-        public virtual StorageType StorageType { get; set; }
-        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IncomeNote> IncomeNotes { get; set; }
+        public virtual StorageType StorageType { get; set; }
+        public virtual User User { get; set; }
     }
 }

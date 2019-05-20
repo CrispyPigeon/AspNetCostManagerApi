@@ -17,13 +17,13 @@ namespace TempApi.Models.Db
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public StorageType()
         {
-            this.Incomes = new HashSet<Income>();
+            this.Wallets = new HashSet<Wallet>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Income> Incomes { get; set; }
+        public virtual ICollection<Wallet> Wallets { get; set; }
     }
 }

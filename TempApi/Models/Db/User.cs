@@ -18,9 +18,9 @@ namespace TempApi.Models.Db
         public User()
         {
             this.Costs = new HashSet<Cost>();
-            this.Incomes = new HashSet<Income>();
-            this.MonthPlans = new HashSet<MonthPlan>();
             this.IncomeNotes = new HashSet<IncomeNote>();
+            this.MonthPlans = new HashSet<MonthPlan>();
+            this.Wallets = new HashSet<Wallet>();
         }
     
         public int ID { get; set; }
@@ -30,10 +30,10 @@ namespace TempApi.Models.Db
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cost> Costs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Income> Incomes { get; set; }
+        public virtual ICollection<IncomeNote> IncomeNotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MonthPlan> MonthPlans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<IncomeNote> IncomeNotes { get; set; }
+        public virtual ICollection<Wallet> Wallets { get; set; }
     }
 }

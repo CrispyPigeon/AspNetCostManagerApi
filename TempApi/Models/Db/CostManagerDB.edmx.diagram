@@ -5,24 +5,23 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="54cbdcf5f21b418aa2e2eaccc5f37d25" Name="Diagram1">
-        <EntityTypeShape EntityType="CostManagerDbModel.CostCategory" Width="1.5" PointX="8.25" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostManagerDbModel.Cost" Width="1.5" PointX="5.875" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostManagerDbModel.Currency" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostManagerDbModel.Income" Width="1.5" PointX="3.625" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostManagerDbModel.MonthPlan" Width="1.5" PointX="5.875" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostManagerDbModel.StorageType" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostManagerDbModel.User" Width="1.5" PointX="3.375" PointY="6" IsExpanded="true" />
-        <AssociationConnector Association="CostManagerDbModel.IncomeF1" ManuallyRouted="false" />
-        <AssociationConnector Association="CostManagerDbModel.UserF2" ManuallyRouted="false" >
-        </AssociationConnector>
-        <AssociationConnector Association="CostManagerDbModel.CurrencyF1" ManuallyRouted="false" />
-        <AssociationConnector Association="CostManagerDbModel.StorageTypeF1" ManuallyRouted="false" />
-        <AssociationConnector Association="CostManagerDbModel.UserF1" ManuallyRouted="false" />
-        <AssociationConnector Association="CostManagerDbModel.UserF3" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CostManagerDbModel.CostCategory" Width="1.5" PointX="1.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CostManagerDbModel.Cost" Width="1.5" PointX="3.625" PointY="5" />
+        <EntityTypeShape EntityType="CostManagerDbModel.Currency" Width="1.5" PointX="1.375" PointY="0.5" />
+        <EntityTypeShape EntityType="CostManagerDbModel.IncomeNote" Width="1.5" PointX="6.625" PointY="5.25" />
+        <EntityTypeShape EntityType="CostManagerDbModel.MonthPlan" Width="1.5" PointX="5.375" PointY="8.5" />
+        <EntityTypeShape EntityType="CostManagerDbModel.StorageType" Width="1.5" PointX="1.375" PointY="2.875" />
+        <EntityTypeShape EntityType="CostManagerDbModel.User" Width="1.5" PointX="1.375" PointY="5.375" />
+        <EntityTypeShape EntityType="CostManagerDbModel.Wallet" Width="1.5" PointX="3.625" PointY="0.875" />
         <AssociationConnector Association="CostManagerDbModel.CostCategoryF1" />
-        <EntityTypeShape EntityType="CostManagerDbModel.IncomeNote" Width="1.5" PointX="6" PointY="0.625" />
+        <AssociationConnector Association="CostManagerDbModel.IncomeF1" />
+        <AssociationConnector Association="CostManagerDbModel.UserF2" />
+        <AssociationConnector Association="CostManagerDbModel.CurrencyF1" />
         <AssociationConnector Association="CostManagerDbModel.IncomeF3" />
         <AssociationConnector Association="CostManagerDbModel.UserIDF4" />
+        <AssociationConnector Association="CostManagerDbModel.UserF3" />
+        <AssociationConnector Association="CostManagerDbModel.StorageTypeF1" />
+        <AssociationConnector Association="CostManagerDbModel.UserF1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

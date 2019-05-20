@@ -232,7 +232,7 @@
     <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IncomeController.cs" />
+    <Compile Include="Controllers\WalletsController.cs" />
     <Compile Include="Controllers\CostCategoryController.cs" />
     <Compile Include="Controllers\IncomeNoteController.cs" />
     <Compile Include="Controllers\StorageTypeController.cs" />
@@ -274,9 +274,6 @@
     <Compile Include="Models\Db\Currency.cs">
       <DependentUpon>CostManagerDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Db\Income.cs">
-      <DependentUpon>CostManagerDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Db\IncomeNote.cs">
       <DependentUpon>CostManagerDB.tt</DependentUpon>
     </Compile>
@@ -289,9 +286,12 @@
     <Compile Include="Models\Db\User.cs">
       <DependentUpon>CostManagerDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Db\Wallet.cs">
+      <DependentUpon>CostManagerDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Requests\CostsByIncome\CostByCategory.cs" />
-    <Compile Include="Models\Requests\CostsByIncome\CostByIncome.cs" />
+    <Compile Include="Models\Requests\CostsByIncome\CostByWallet.cs" />
     <Compile Include="Models\Requests\CostsByIncome\IncomeForCosts.cs" />
     <Compile Include="Models\Requests\Messages\BadMessage.cs" />
     <Compile Include="Models\Requests\Messages\Base\Message.cs" />
