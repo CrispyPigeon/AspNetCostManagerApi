@@ -47,7 +47,7 @@ namespace TempApi.Controllers.Calculations
                 {
                     result.Add(new CostByWallet
                     {
-                        Wallet = new IncomeForCosts
+                        Wallet = new WalletOfCosts
                         {
                             Name = income.Name,
                             Sum = income.Sum,

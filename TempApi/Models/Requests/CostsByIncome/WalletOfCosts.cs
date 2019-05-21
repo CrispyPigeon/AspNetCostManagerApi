@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TempApi.Models.Requests.CostsByIncome
 {
-    public class IncomeForCosts
+    public class WalletOfCosts
     {
         public string Name { get; set; }
 

@@ -292,7 +292,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Requests\CostsByIncome\CostByCategory.cs" />
     <Compile Include="Models\Requests\CostsByIncome\CostByWallet.cs" />
-    <Compile Include="Models\Requests\CostsByIncome\IncomeForCosts.cs" />
+    <Compile Include="Models\Requests\CostsByIncome\WalletOfCosts.cs" />
     <Compile Include="Models\Requests\Messages\BadMessage.cs" />
     <Compile Include="Models\Requests\Messages\Base\Message.cs" />
     <Compile Include="Models\Requests\Messages\OkMessage.cs" />
