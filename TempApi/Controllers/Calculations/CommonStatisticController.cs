@@ -54,10 +54,10 @@ namespace TempApi.Controllers.Calculations
                             LastSum = income.LastSum,
                             Currency = income.Currency.Name
                         },
-                        Costs = income.Costs.Select(x => new CostByCategory
+                        Costs = income.Costs.GroupBy(x => x.CostCategory.Name).Select(x => new CostByCategory
                         {
-                            CategoryName = x.CostCategory.Name,
-                            Sum = x.Sum
+                            CategoryName = x.Key,
+                            Sum = x.Sum(y => y.Sum)
                         }).ToList()
                     });
                 }
