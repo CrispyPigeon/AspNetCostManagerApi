@@ -25,13 +25,21 @@ namespace TempApi.Controllers
 
         public Message Post([FromBody]Wallet item)
         {
+            if (item == null)
+                return new BadMessage();
             using (var dbContext = InitializeDbContext())
             {
                 var id = GetUserDbId();
-                dbContext.Wallets.Add(item);
-                var income = dbContext.Wallets.FirstOrDefault(x => x.ID == item.ID);
-                income.Sum += item.Sum; //Updating INCOME
-                income.LastSum += item.Sum;
+                if (item.ID == 0)
+                {
+                    item.UserID = id;
+                    dbContext.Wallets.Add(item);
+                }
+                else
+                {
+                    var wallet = dbContext.Wallets.FirstOrDefault(x => x.ID == item.ID);
+                    wallet.Name = item.Name;
+                }
                 dbContext.SaveChanges();
                 var result = new OkMessage();
                 result.ReturnMessage = "Item successfully added!";

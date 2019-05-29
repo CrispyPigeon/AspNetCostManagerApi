@@ -21,20 +21,6 @@ namespace TempApi.Controllers.Calculations
             using (var dbContext = InitializeDbContext())
             {
                 var userId = GetUserDbId();
-                //var incomes = dbContext.Wallets.Where(x => x.UserID == userId)
-                //    .Select(x => new Wallet
-                //{
-                //    Name = x.Name,
-                //    Sum = x.Sum,
-                //    LastSum = x.LastSum,
-                //    Costs = x.Costs.AsQueryable().Select(y => new Cost
-                //    {
-                //        Sum = y.Sum,
-                //        CostCategory = y.CostCategory
-
-                //    }).ToList(),
-                //    Currency = x.Currency
-                //}).ToList();
 
                 var incomes = dbContext.Wallets.Where(x => x.UserID == userId)
                     .Include(y => y.Costs.Select(z => z.CostCategory))
@@ -54,9 +40,10 @@ namespace TempApi.Controllers.Calculations
                             LastSum = income.LastSum,
                             Currency = income.Currency.Name
                         },
-                        Costs = income.Costs.GroupBy(x => x.CostCategory.Name).Select(x => new CostByCategory
+                        Costs = income.Costs.GroupBy(x => new { x.CostCategory.Name, x.CostCategory.RgbColor }).Select(x => new CostByCategory
                         {
-                            CategoryName = x.Key,
+                            CategoryName = x.Key.Name,
+                            RgbColor = x.Key.RgbColor,
                             Sum = x.Sum(y => y.Sum)
                         }).ToList()
                     });

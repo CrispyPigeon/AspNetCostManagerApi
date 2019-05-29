@@ -10,6 +10,8 @@ using TempApi.Models.Requests.Base;
 
 namespace TempApi.Controllers
 {
+    [Authorize]
+    [RoutePrefix("api/incomenote")]
     public class IncomeNoteController : BaseController
     {
         public Message<List<IncomeNote>> Get()
@@ -26,15 +28,28 @@ namespace TempApi.Controllers
 
         public Message Post([FromBody]IncomeNote item)
         {
+            if (item == null)
+                return new BadMessage();
             using (var dbContext = InitializeDbContext())
             {
                 var id = GetUserDbId();
-                item.UserID = id;
-                dbContext.IncomeNotes.Add(item);
+                if (item.ID == 0)
+                {
+                    item.UserID = id;
+                    var wallet = dbContext.Wallets.FirstOrDefault(x => x.ID == item.WalletID);
+                    wallet.Sum += item.Sum;
+                    wallet.LastSum += item.Sum;
+                    dbContext.IncomeNotes.Add(item);
+                }
+                else
+                {
+                    var incomeNote = dbContext.IncomeNotes.FirstOrDefault(x => x.ID == item.ID);
+                    incomeNote.Name = item.Name;
+                }
                 dbContext.SaveChanges();
                 var result = new OkMessage();
                 result.ReturnMessage = "Item successfully added!";
-                return result;
+                return result;                
             }
         }
     }

@@ -23,5 +23,10 @@ namespace TempApi.Models.Requests
             IsSuccess = false;
             StatusCode = (int)HttpStatusCode.InternalServerError;
         }
+
+        public BadMessage(string message) : this()
+        {
+            ReturnMessage = message;
+        }
     }
 }

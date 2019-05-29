@@ -9,6 +9,8 @@ namespace TempApi.Models.Requests.CostsByIncome
     {
         public string CategoryName { get; set; }
 
+        public string RgbColor { get; set; }
+
         public decimal Sum { get; set; }
     }
 }
