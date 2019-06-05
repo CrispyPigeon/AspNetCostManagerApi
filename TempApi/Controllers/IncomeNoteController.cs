@@ -52,5 +52,32 @@ namespace TempApi.Controllers
                 return result;                
             }
         }
+
+        [HttpDelete, Route("{incomeId}")]
+        public Message RemoveItem(int incomeId)
+        {
+            if (incomeId == 0)
+                return new BadMessage();
+            using (var dbContext = InitializeDbContext())
+            {
+                var incomeNote = dbContext.IncomeNotes.FirstOrDefault(x => x.ID == incomeId);
+                if (incomeNote == null)
+                {
+                    return new BadMessage("Income not found!");
+                }
+                var wallet = dbContext.Wallets.FirstOrDefault(x => x.ID == incomeNote.WalletID);
+                wallet.Sum -= incomeNote.Sum;
+                wallet.LastSum -= incomeNote.Sum;
+                if (wallet.Sum < 0 || wallet.LastSum < 0)
+                {
+                    return new BadMessage("Wallet sum/lastSum can't be lower that 0!");
+                }
+                dbContext.IncomeNotes.Remove(incomeNote);
+                dbContext.SaveChanges();
+                var result = new OkMessage();
+                result.ReturnMessage = "Income successfully deleted!";
+                return result;
+            }
+        }
     }
 }

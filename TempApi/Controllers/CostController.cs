@@ -61,5 +61,27 @@ namespace TempApi.Controllers
                 return result;
             }
         }
+
+        [HttpDelete, Route("{costId}")]
+        public Message RemoveItem(int costId)
+        {
+            if (costId == 0)
+                return new BadMessage();
+            using (var dbContext = InitializeDbContext())
+            {
+                var cost = dbContext.Costs.FirstOrDefault(x => x.ID == costId);
+                if (cost == null)
+                {
+                    return new BadMessage("Cost not found!");
+                }
+                var wallet = dbContext.Wallets.FirstOrDefault(x => x.ID == cost.WalletID);
+                wallet.LastSum += cost.Sum;
+                dbContext.Costs.Remove(cost);
+                dbContext.SaveChanges();
+                var result = new OkMessage();
+                result.ReturnMessage = "Cost successfully deleted!";
+                return result;
+            }
+        }
     }
 }
